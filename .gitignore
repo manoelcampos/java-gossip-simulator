@@ -1,0 +1,8 @@
+/target/
+
+# IntelliJ Files
+.idea
+*.iml
+
+#MacOS
+.DS_Store

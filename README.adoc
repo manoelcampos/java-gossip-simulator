@@ -1,0 +1,12 @@
+# Java Gossip Protocol Simulator API
+
+An experimental Java API to enable simulating the spread of data
+across nodes (Hosts) in a network using the Gossip Protocol.
+
+The API enables running the simulation using a single computer.
+Every node is represented by a Plain Old Java Object `GossipNode`.
+Therefore, since this is a simulation API, there is no actual
+network communication.
+
+Check the link:src/main/java/com/manoelcampos/gossipsimulator/com/manoelcampos/gossipsimulator/examples/[this package]
+for some utilization examples.

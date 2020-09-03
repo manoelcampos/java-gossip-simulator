@@ -10,3 +10,6 @@ network communication.
 
 Check the link:src/main/java/com/manoelcampos/gossipsimulator/com/manoelcampos/gossipsimulator/examples/[this package]
 for some utilization examples.
+
+If you want to understand how the Gossip Protocol works, check this
+nice https://flopezluis.github.io/gossip-simulator/[online visual simulator].

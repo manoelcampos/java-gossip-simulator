@@ -1,4 +1,6 @@
-# Java Gossip Protocol Simulator API image:https://img.shields.io/github/workflow/status/manoelcampos/java-gossip-simulator/maven[GitHub Workflow Status]
+:numbered:
+
+= Java Gossip Protocol Simulator API image:https://img.shields.io/github/workflow/status/manoelcampos/java-gossip-simulator/maven[GitHub Workflow Status]
 
 An experimental Java API to enable simulating the spread of data
 across nodes (Hosts) in a network using the Gossip Protocol.
@@ -6,10 +8,14 @@ across nodes (Hosts) in a network using the Gossip Protocol.
 The API enables running the simulation using a single computer.
 Every node is represented by a Plain Old Java Object `GossipNode`.
 Therefore, since this is a simulation API, there is no actual
-network communication.
+network communication, not even in localhost.
+
+== Examples
 
 Check the link:src/main/java/com/manoelcampos/gossipsimulator/com/manoelcampos/gossipsimulator/examples/[this package]
 for some utilization examples.
+
+== Links
 
 If you want to understand how the Gossip Protocol works, check this
 nice https://flopezluis.github.io/gossip-simulator/[online visual simulator].

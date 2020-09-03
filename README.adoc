@@ -1,4 +1,4 @@
-# Java Gossip Protocol Simulator API
+# Java Gossip Protocol Simulator API image:https://img.shields.io/github/workflow/status/manoelcampos/java-gossip-simulator/maven[GitHub Workflow Status]
 
 An experimental Java API to enable simulating the spread of data
 across nodes (Hosts) in a network using the Gossip Protocol.

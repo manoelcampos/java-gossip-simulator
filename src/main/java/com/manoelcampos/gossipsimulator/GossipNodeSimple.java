@@ -41,12 +41,18 @@ public class GossipNodeSimple<T> implements GossipNode<T> {
         final boolean sendToAllNeighbours = neighbours.size() < config().getFanout();
         final List<GossipNode<T>> selected = sendToAllNeighbours ? neighbours : getRandomNodes();
 
+
         LOGGER.info(
                 "{} is going to send a message to {} {} {}{}",
-                this, selected.size(), sendToAllNeighbours ? "existing" : "randomly selected",
+                this, formatCount(selected.size()), sendToAllNeighbours ? "existing" : "randomly selected",
                 selected.size() > 1 ? "neighbours" : "neighbour",
-                sendToAllNeighbours ? "" : String.format(" from total of %d", neighbours.size()));
+                sendToAllNeighbours ? "" : " from total of " + formatCount(neighbours.size()));
         selected.forEach(node -> node.receiveMessage(this, data));
+    }
+
+    private String formatCount(final int count) {
+        final int digits = String.valueOf(simulator.getNodesCount()).length();
+        return String.format("%" + digits + "d", count);
     }
 
     private List<GossipNode<T>> getRandomNodes() {

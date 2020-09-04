@@ -12,7 +12,7 @@ network communication, not even in localhost.
 
 == Examples
 
-Check the link:src/main/java/com/manoelcampos/gossipsimulator/com/manoelcampos/gossipsimulator/examples/[this package]
+Check link:src/main/java/com/manoelcampos/gossipsimulator/com/manoelcampos/gossipsimulator/examples/[this package]
 for some utilization examples.
 
 == Links

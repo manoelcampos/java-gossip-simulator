@@ -34,6 +34,10 @@ public class GossipSimulator<T> {
         return Collections.unmodifiableList(nodes);
     }
 
+    public int getNodesCount(){
+        return nodes.size();
+    }
+
     void addNode(final GossipNode<T> neighbour) {
         nodes.add(Objects.requireNonNull(neighbour));
     }

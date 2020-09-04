@@ -24,4 +24,4 @@ for some utilization examples.
 == Links
 
 If you want to understand how the Gossip Protocol works, check this
-nice https://flopezluis.github.io/gossip-simulator/[online visual simulator].
+nice https://flopezluis.github.io/gossip-simulator/[online graphical simulator].

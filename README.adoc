@@ -12,6 +12,12 @@ network communication, not even in localhost.
 
 == Examples
 
+The figure below shows an example of the output for a simulation cycle,
+where nodes send a message to their neighbours.
+An infected node (🐞) is the one that has already received a message.
+
+image::results.png[]
+
 Check link:src/main/java/com/manoelcampos/gossipsimulator/com/manoelcampos/gossipsimulator/examples/[this package]
 for some utilization examples.
 

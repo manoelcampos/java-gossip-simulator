@@ -13,8 +13,8 @@ public class GossipNodeSimple<T> implements GossipNode<T> {
     public GossipNodeSimple(final long id, final GossipSimulator<T> simulator) {
         this.simulator = requireNonNull(simulator);
         this.id = id;
-        simulator.addNode(this);
         this.neighbours = new HashSet<>();
+        simulator.addNode(this);
     }
 
     @Override

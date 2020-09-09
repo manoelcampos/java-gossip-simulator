@@ -40,7 +40,7 @@ public class GossipSimulator<T> {
         return nodes.size();
     }
 
-    void addNode(final GossipNode<T> neighbour) {
+    final void addNode(final GossipNode<T> neighbour) {
         nodes.add(Objects.requireNonNull(neighbour));
     }
 

@@ -100,7 +100,8 @@ public class GossipNodeSimple<T> implements GossipNode<T> {
 
     @Override
     public String toString() {
-        return String.format("GossipNode %d%s", id, isInfected() ? " 🐞" : "");
+        final int len = String.valueOf(simulator.getNodesCount()).length();
+        return String.format("GossipNode %"+len+"d%s", id, isInfected() ? " 🐞" : " 💚");
     }
 
     @Override

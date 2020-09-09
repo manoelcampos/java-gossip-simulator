@@ -14,7 +14,8 @@ network communication, not even in localhost.
 
 The figure below shows an example of the output for a simulation cycle,
 where nodes send a message to their neighbours.
-An infected node (🐞) is the one that has already received a message.
+An infected node 🐞 is that one which has already received a message,
+otherwise it's a non-infected node 💚.
 
 image::results.png[]
 

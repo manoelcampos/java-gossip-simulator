@@ -33,11 +33,11 @@ public interface GossipNode<T> extends Comparable<GossipNode<T>>{
     void setMessage(T message);
 
     /**
-     * Sends a stored message to {@link GossipConfig#getFanout() N (fanout)} randomly selected nodes
+     * Sends a {@link #getMessage() stored message} to {@link GossipConfig#getFanout() N (fanout)} randomly selected nodes
      * in the {@link #getNeighbours() neighbourhood}.
-     * @see #getMessage()
-     * @return true if the node has some {@link #getMessage() message} to send and it was sent,
+     * @return true if the node has some message to send and it was sent,
      *         false otherwise
+     * @see #getMessage()
      */
     boolean sendMessage();
 

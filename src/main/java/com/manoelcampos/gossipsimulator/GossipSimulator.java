@@ -63,7 +63,7 @@ public class GossipSimulator<T> {
      * @see #getInfectedNodesNumber()
      */
     public void run() {
-        if(cycles == 0){
+        if(cycles++ == 0){
             if(nodes.size() <= config.getMaxNeighbours()) {
                 throw new IllegalStateException(
                         String.format(
@@ -74,7 +74,6 @@ public class GossipSimulator<T> {
             nodes.forEach(this::addRandomNeighbours);
         }
 
-        cycles++;
         LOGGER.info("Running simulation cycle {}", cycles);
         final long messagesSent = nodes.stream()
                                        .filter(GossipNode::isInfected)

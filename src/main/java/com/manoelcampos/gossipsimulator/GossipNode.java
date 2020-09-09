@@ -3,7 +3,8 @@ package com.manoelcampos.gossipsimulator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
+import java.util.Collection;
+import java.util.Set;
 
 /**
  *
@@ -35,7 +36,18 @@ public interface GossipNode<T> extends Comparable<GossipNode<T>>{
      */
     boolean addNeighbour(GossipNode<T> neighbour);
 
-    List<GossipNode<T>> getNeighbours();
+    /**
+     * Adds a collection of nodes as neighbours
+     * @param newNeighbours the nodes to add
+     * @return true if the nodes were added, false if the given nodes area already in the neighbourhood
+     */
+    boolean addNeighbours(Collection<GossipNode<T>> newNeighbours);
+
+    /**
+     * Gets an unmodifiable Set of neighbours.
+     * @return
+     */
+    Set<GossipNode<T>> getNeighbours();
 
     int getNeighbourhoodSize();
 

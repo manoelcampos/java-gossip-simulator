@@ -1,21 +1,20 @@
 package com.manoelcampos.gossipsimulator;
 
 import java.util.*;
-import java.util.stream.IntStream;
 
-import static java.util.stream.Collectors.toList;
+import static java.util.Objects.requireNonNull;
 
 public class GossipNodeSimple<T> implements GossipNode<T> {
     private final GossipSimulator<T> simulator;
-    private final List<GossipNode<T>> neighbours;
+    private final Set<GossipNode<T>> neighbours;
     private T latestData;
     private long id;
 
     public GossipNodeSimple(final long id, final GossipSimulator<T> simulator) {
-        this.simulator = Objects.requireNonNull(simulator);
-        simulator.addNode(this);
-        this.neighbours = new LinkedList<>();
+        this.simulator = requireNonNull(simulator);
         this.id = id;
+        simulator.addNode(this);
+        this.neighbours = new HashSet<>();
     }
 
     @Override
@@ -39,8 +38,7 @@ public class GossipNodeSimple<T> implements GossipNode<T> {
         * If we have 2 neighbours and the fanout is 4, we just select all the existing neighbours to
         * send messages to.*/
         final boolean sendToAllNeighbours = neighbours.size() < config().getFanout();
-        final List<GossipNode<T>> selected = sendToAllNeighbours ? neighbours : getRandomNodes();
-
+        final Collection<GossipNode<T>> selected = sendToAllNeighbours ? neighbours : getRandomNodes();
 
         LOGGER.info(
                 "{} is going to send a message to {} {} {}{}",
@@ -55,9 +53,8 @@ public class GossipNodeSimple<T> implements GossipNode<T> {
         return String.format("%" + digits + "d", count);
     }
 
-    private List<GossipNode<T>> getRandomNodes() {
-        final int iterations = Math.min(config().getFanout(), neighbours.size());
-        return IntStream.range(0, iterations).mapToObj(i -> simulator.randomNode(neighbours)).collect(toList());
+    private Collection<GossipNode<T>> getRandomNodes() {
+        return simulator.randomNodes(neighbours, config().getFanout());
     }
 
     @Override
@@ -73,12 +70,17 @@ public class GossipNodeSimple<T> implements GossipNode<T> {
         if(this.equals(neighbour))
             return false;
 
-        return neighbours.add(Objects.requireNonNull(neighbour));
+        return neighbours.add(requireNonNull(neighbour));
     }
 
     @Override
-    public List<GossipNode<T>> getNeighbours() {
-        return Collections.unmodifiableList(neighbours);
+    public boolean addNeighbours(final Collection<GossipNode<T>> newNeighbours) {
+        return neighbours.addAll(requireNonNull(newNeighbours));
+    }
+
+    @Override
+    public Set<GossipNode<T>> getNeighbours() {
+        return Collections.unmodifiableSet(neighbours);
     }
 
     @Override

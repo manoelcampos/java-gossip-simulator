@@ -16,13 +16,14 @@ public interface GossipNode<T> extends Comparable<GossipNode<T>>{
     long getId();
 
     /**
-     * Sends a stored message to {@link GossipConfig#getFanout() N (fanout)} randomly selected nodes
-     * in the {@link #getNeighbours() neighbourhood}.
-     * @see #getMessage()
-     * @return true if the node has some {@link #getMessage() message} to send and it was sent,
-     *         false otherwise
+     * Gets the latest message the node is storing.
+     * This data may have been generated for this node or received
+     * by other nodes, in order to spread such a data through the neighbourhood.
+     * @return the latest message stored or null if the node was never infected (if a message or
+     *         never received from another node or manually set.
+     * @see #sendMessage()
      */
-    boolean sendMessage();
+    T getMessage();
 
     /**
      * Stores a message to be sent to nodes in the neighbourhood.
@@ -30,6 +31,15 @@ public interface GossipNode<T> extends Comparable<GossipNode<T>>{
      * @see #sendMessage()
      */
     void setMessage(T message);
+
+    /**
+     * Sends a stored message to {@link GossipConfig#getFanout() N (fanout)} randomly selected nodes
+     * in the {@link #getNeighbours() neighbourhood}.
+     * @see #getMessage()
+     * @return true if the node has some {@link #getMessage() message} to send and it was sent,
+     *         false otherwise
+     */
+    boolean sendMessage();
 
     /**
      * Receives a message from a source node and updates the list of know neighbours.
@@ -59,16 +69,6 @@ public interface GossipNode<T> extends Comparable<GossipNode<T>>{
     Set<GossipNode<T>> getNeighbours();
 
     int getNeighbourhoodSize();
-
-    /**
-     * Gets the latest message the node is storing.
-     * This data may have been generated for this node or received
-     * by other nodes, in order to spread such a data through the neighbourhood.
-     * @return the latest message stored or null if the node was never infected (if a message or
-     *         never received from another node or manually set.
-     * @see #sendMessage()
-     */
-    T getMessage();
 
     /**
      * Indicates if the node has received any data already.

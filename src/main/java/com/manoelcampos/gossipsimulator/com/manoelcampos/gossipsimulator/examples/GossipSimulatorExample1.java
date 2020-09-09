@@ -27,11 +27,24 @@ public class GossipSimulatorExample1 {
         simulator = new GossipSimulator<>(config, new UniformRealDistribution());
 
         nodes = createNodes();
+        infectRandomNode("Msg " + simulator.rand());
+
         System.out.println();
         for (int i = 0; i < CYCLES; i++) {
             System.out.println();
-            simulator.run("Msg "+simulator.rand());
+            simulator.run();
         }
+    }
+
+    /**
+     * Randomly selects a node to infect, that is, to store a message
+     * to be disseminated.
+     * @param message the message to be disseminated
+     */
+    private void infectRandomNode(final String message) {
+        final int randIndex = simulator.rand(NODES_COUNT);
+        final GossipNode<String> node = nodes.get(randIndex);
+        node.setMessage(message);
     }
 
     private List<GossipNode<String>> createNodes() {

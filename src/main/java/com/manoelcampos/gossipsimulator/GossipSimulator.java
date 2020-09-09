@@ -56,10 +56,9 @@ public class GossipSimulator<T> {
      * Runs a cycle of the Gossip transmissions,
      * making all infected nodes to send the data
      * to their neighbours.
-     * @param message the message to spread to neighbours
      * @throws IllegalStateException
      */
-    public void run(final T message) {
+    public void run() {
         if(cycles == 0){
             if(nodes.size() <= config.getMaxNeighbours()) {
                 throw new IllegalStateException(
@@ -73,10 +72,17 @@ public class GossipSimulator<T> {
 
         cycles++;
         LOGGER.info("Running simulation cycle {}", cycles);
-        nodes.forEach(node -> node.sendMessage(message));
-        LOGGER.info(
-                "Number of infected nodes 🐞 after {} {}: {} of {}",
-                cycles, cycles > 1 ? "cycles" : "cycle", getInfectedNodesNumber(), nodes.size());
+        final long messagesSent = nodes.stream()
+                                       .filter(GossipNode::isInfected)
+                                       .filter(GossipNode::sendMessage)
+                                       .count();
+        if(messagesSent == 0) {
+            LOGGER.warn(
+                    "No message was sent by the {} nodes because there is no infected node or their neighbourhood is empty.",
+                    nodes.size());
+        } else LOGGER.info(
+                "Number of infected nodes 🐞 after sending messages to {} nodes: {} of {} (cycle {})",
+                messagesSent, getInfectedNodesNumber(), nodes.size(), cycles);
     }
 
     /**
@@ -168,7 +174,7 @@ public class GossipSimulator<T> {
     /**
      * Gets the number of cycles up to now.
      * @return
-     * @see #run(Object)
+     * @see #run()
      */
     public int getCycles() {
         return cycles;

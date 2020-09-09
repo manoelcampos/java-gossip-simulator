@@ -7,7 +7,7 @@ import static java.util.Objects.requireNonNull;
 public class GossipNodeSimple<T> implements GossipNode<T> {
     private final GossipSimulator<T> simulator;
     private final Set<GossipNode<T>> neighbours;
-    private T latestData;
+    private T message;
     private long id;
 
     public GossipNodeSimple(final long id, final GossipSimulator<T> simulator) {
@@ -27,10 +27,15 @@ public class GossipNodeSimple<T> implements GossipNode<T> {
     }
 
     @Override
-    public void sendMessage(final T data) {
+    public boolean sendMessage() {
+        if(message == null){
+            LOGGER.warn("{} has no stored message to send", this);
+            return false;
+        }
+
         if(neighbours.isEmpty()){
             LOGGER.warn("{} has no neighbours to send messages to", this);
-            return;
+            return false;
         }
 
         /*If the number of known neighbours is lower than the number of random neighbours to select,
@@ -45,7 +50,8 @@ public class GossipNodeSimple<T> implements GossipNode<T> {
                 this, formatCount(selected.size()), sendToAllNeighbours ? "existing" : "randomly selected",
                 selected.size() > 1 ? "neighbours" : "neighbour",
                 sendToAllNeighbours ? "" : " from total of " + formatCount(neighbours.size()));
-        selected.forEach(node -> node.receiveMessage(this, data));
+        selected.forEach(node -> node.receiveMessage(this, message));
+        return true;
     }
 
     private String formatCount(final int count) {
@@ -61,7 +67,7 @@ public class GossipNodeSimple<T> implements GossipNode<T> {
     public void receiveMessage(final GossipNode<T> source, final T data) {
         //Updates the set of neighbour nodes
         neighbours.add(source);
-        this.latestData = data;
+        this.message = data;
         LOGGER.debug("{} received message from {}", this, source);
     }
 
@@ -89,13 +95,18 @@ public class GossipNodeSimple<T> implements GossipNode<T> {
     }
 
     @Override
-    public T getLatestData() {
-        return latestData;
+    public T getMessage() {
+        return message;
+    }
+
+    @Override
+    public void setMessage(final T message) {
+        this.message = message;
     }
 
     @Override
     public boolean isInfected() {
-        return latestData != null;
+        return message != null;
     }
 
     @Override

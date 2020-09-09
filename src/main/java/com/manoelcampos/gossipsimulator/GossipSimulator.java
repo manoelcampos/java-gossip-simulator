@@ -54,9 +54,13 @@ public class GossipSimulator<T> {
 
     /**
      * Runs a cycle of the Gossip transmissions,
-     * making all infected nodes to send the data
-     * to their neighbours.
+     * making all infected nodes to send the data to their neighbours.
+     * If you want to run multiple cycles, you need to call this method
+     * inside a loop with the stop condition you want.
+     * For instance, you may want to run a fixed number of cycles
+     * or while there are non-infected nodes.
      * @throws IllegalStateException
+     * @see #getInfectedNodesNumber()
      */
     public void run() {
         if(cycles == 0){

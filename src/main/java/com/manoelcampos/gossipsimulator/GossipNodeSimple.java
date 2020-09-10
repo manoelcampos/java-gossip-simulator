@@ -4,6 +4,10 @@ import java.util.*;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * A basic implementation of a {@link GossipNode}.
+ * @param <T> the type of the data the node shares
+ */
 public class GossipNodeSimple<T> implements GossipNode<T> {
     private final GossipSimulator<T> simulator;
     private final Set<GossipNode<T>> neighbours;

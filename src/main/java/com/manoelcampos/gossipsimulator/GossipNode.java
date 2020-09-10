@@ -7,6 +7,8 @@ import java.util.Collection;
 import java.util.Set;
 
 /**
+ * A node that shares {@link #getMessage() data}
+ * across its {@link #getNeighbours() neighbourhood} using the Gossip Protocol.
  *
  * @param <T> the type of the data the node shares
  */

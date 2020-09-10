@@ -1,5 +1,9 @@
 package com.manoelcampos.gossipsimulator;
 
+/**
+ * Gossip Protocol configuration.
+ * It defines a set of parameters used to run a simulation.
+ */
 public class GossipConfig {
     private final int fanout;
     private final int maxNeighbours;

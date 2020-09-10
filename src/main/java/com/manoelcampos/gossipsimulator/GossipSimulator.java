@@ -11,8 +11,11 @@ import java.util.stream.IntStream;
 import static java.util.stream.Collectors.*;
 
 /**
+ * Simulates the dissemination of data across a
+ * network of Gossip nodes.
  *
  * @param <T> the type of the data the node shares
+ * @see #run()
  */
 public class GossipSimulator<T> {
     public static final Logger LOGGER = LoggerFactory.getLogger(GossipSimulator.class.getSimpleName());
@@ -53,7 +56,7 @@ public class GossipSimulator<T> {
     }
 
     /**
-     * Runs a cycle of the Gossip transmissions,
+     * Runs a {@link #getCycles() cycle} of the Gossip transmissions,
      * making all infected nodes to send the data to their neighbours.
      * If you want to run multiple cycles, you need to call this method
      * inside a loop with the stop condition you want.

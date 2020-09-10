@@ -1,4 +1,4 @@
-# Java Gossip Protocol Simulator API ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/manoelcampos/java-gossip-simulator/maven)
+# Java Gossip Protocol Simulator API ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/manoelcampos/java-gossip-simulator/maven) [![Maven Central](https://img.shields.io/maven-central/v/com.manoelcampos/gossip-simulator.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.manoelcampos%22%20AND%20a:%22gossip-simulator%22) [![javadoc](https://javadoc.io/badge2/com.manoelcampos/gossip-simulator/javadoc.svg)](https://javadoc.io/doc/com.manoelcampos/gossip-simulator)
 
 An experimental Java API to enable simulating the dissemination of data
 across nodes (Hosts) in a network using the [Gossip epidemic protocol](https://en.wikipedia.org/wiki/Gossip_protocol).

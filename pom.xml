@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.example</groupId>
-    <artifactId>java-gossip-simulator</artifactId>
-    <version>1.0.0</version>
+    <groupId>com.manoelcampos</groupId>
+    <artifactId>gossip-simulator</artifactId>
+    <version>0.0.1</version>
 
     <name>Java Gossip Simulator API</name>
     <description>An API to create applications to simulate the Gossip Protocol</description>

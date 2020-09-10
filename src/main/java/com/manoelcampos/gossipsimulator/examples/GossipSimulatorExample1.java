@@ -1,4 +1,4 @@
-package com.manoelcampos.gossipsimulator.com.manoelcampos.gossipsimulator.examples;
+package com.manoelcampos.gossipsimulator.examples;
 
 import com.manoelcampos.gossipsimulator.GossipConfig;
 import com.manoelcampos.gossipsimulator.GossipNode;

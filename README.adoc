@@ -19,7 +19,7 @@ otherwise it's a non-infected node 💚.
 
 image::results.png[]
 
-Check link:src/main/java/com/manoelcampos/gossipsimulator/com/manoelcampos/gossipsimulator/examples/[this package]
+Check link:src/main/java/com/manoelcampos/gossipsimulator/examples/[this package]
 for some utilization examples.
 
 == Links

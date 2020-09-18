@@ -24,11 +24,20 @@ public class GossipSimulator<T> {
     private final RealDistribution random;
     private final Set<GossipNode<T>> nodes;
     private int cycles;
+    private int lastNodeId;
 
     public GossipSimulator(final GossipConfig config, final RealDistribution random) {
         this.config = Objects.requireNonNull(config);
         this.random = Objects.requireNonNull(random);
         this.nodes = new HashSet<>();
+    }
+
+    /**
+     * Gets the last node id and increments its value.
+     * @return
+     */
+    int nextNodeId(){
+        return lastNodeId++;
     }
 
     /**

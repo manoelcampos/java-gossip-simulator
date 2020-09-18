@@ -49,7 +49,7 @@ public class GossipSimulatorExample1 {
 
     private List<GossipNode<String>> createNodes() {
         return IntStream.range(0, NODES_COUNT)
-                        .mapToObj(id -> new GossipNodeSimple<>(id, simulator))
+                        .mapToObj(id -> new GossipNodeSimple<>(simulator, id))
                         .collect(toList());
     }
 

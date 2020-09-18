@@ -14,7 +14,11 @@ public class GossipNodeSimple<T> implements GossipNode<T> {
     private T message;
     private long id;
 
-    public GossipNodeSimple(final long id, final GossipSimulator<T> simulator) {
+    public GossipNodeSimple(final GossipSimulator<T> simulator) {
+        this(simulator, simulator.nextNodeId());
+    }
+
+    public GossipNodeSimple(final GossipSimulator<T> simulator, final long id) {
         this.simulator = requireNonNull(simulator);
         this.id = id;
         this.neighbours = new HashSet<>();

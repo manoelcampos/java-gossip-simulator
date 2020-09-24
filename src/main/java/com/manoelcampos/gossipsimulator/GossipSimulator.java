@@ -149,23 +149,23 @@ public class GossipSimulator<T> {
      * If the requested number is greater or equal to the number of available nodes,
      * there is not need to randomly select them and all available nodes are returned.
      *
-     * @param availableNodes the collection to randomly select nodes from
+     * @param sourceNodes the collection to randomly select nodes from
      * @param count the number of random nodes to select
      * @return the collection of randomly selected nodes
      */
-    public Collection<GossipNode<T>> getRandomNodes(final Collection<GossipNode<T>> availableNodes, final int count) {
-        if(count >= availableNodes.size()){
+    public Collection<GossipNode<T>> getRandomNodes(final Collection<GossipNode<T>> sourceNodes, final int count) {
+        if(count >= sourceNodes.size()){
             LOGGER.debug(
                     "It was requested the selection of {} random nodes but there are only {} available. Selecting all available ones.",
-                    count, availableNodes.size());
-            return availableNodes;
+                    count, sourceNodes.size());
+            return sourceNodes;
         }
 
-        if(availableNodes instanceof List<GossipNode<T>> list){
+        if(sourceNodes instanceof List<GossipNode<T>> list){
             return randomNodesFromList(list, count);
         }
 
-        return randomNodesFromCollection(availableNodes, count);
+        return randomNodesFromCollection(sourceNodes, count);
     }
 
     private List<GossipNode<T>> randomNodesFromList(final List<GossipNode<T>> list, final int count) {

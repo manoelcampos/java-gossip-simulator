@@ -9,20 +9,20 @@ import static java.util.Objects.requireNonNull;
  * @param <T> the type of the data the node shares
  */
 public class GossipNodeSimple<T> implements GossipNode<T> {
-    private final GossipSimulator<T, GossipNode<T>> simulator;
+    private final GossipSimulator<T> simulator;
     private final Set<GossipNode<T>> neighbours;
     private T message;
     private long id;
 
-    public <N extends GossipNode<T>> GossipNodeSimple(final GossipSimulator<T, N> simulator) {
+    public GossipNodeSimple(final GossipSimulator<T> simulator) {
         this(simulator, simulator.nextNodeId());
     }
 
-    public <N extends GossipNode<T>> GossipNodeSimple(final GossipSimulator<T, N> simulator, final long id) {
-        this.simulator = (GossipSimulator<T, GossipNode<T>>) requireNonNull(simulator);
+    public GossipNodeSimple(final GossipSimulator<T> simulator, final long id) {
+        this.simulator = requireNonNull(simulator);
         this.id = id;
         this.neighbours = new HashSet<>();
-        simulator.addNode((N)this);
+        simulator.addNode(this);
     }
 
     @Override
@@ -93,7 +93,7 @@ public class GossipNodeSimple<T> implements GossipNode<T> {
     }
 
     @Override
-    public <N extends GossipNode<T>> boolean addNeighbours(final Collection<N> newNeighbours) {
+    public boolean addNeighbours(final Collection<GossipNode<T>> newNeighbours) {
         return neighbours.addAll(requireNonNull(newNeighbours));
     }
 
@@ -151,7 +151,7 @@ public class GossipNodeSimple<T> implements GossipNode<T> {
     }
 
     @Override
-    public <N extends GossipNode<T>> GossipSimulator<T, N> getSimulator() {
-        return (GossipSimulator<T, N>) simulator;
+    public GossipSimulator<T> getSimulator() {
+        return simulator;
     }
 }

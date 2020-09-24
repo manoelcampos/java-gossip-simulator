@@ -72,8 +72,8 @@ public class GossipNodeSimple<T> implements GossipNode<T> {
      * The max number of nodes to select is defined by {@link GossipConfig#getFanout()}.
      * @return
      */
-    private Collection<GossipNode<T>> getRandomNodes() {
-        return simulator.randomNodes(neighbours, config().getFanout());
+    public Collection<GossipNode<T>> getRandomNodes() {
+        return simulator.getRandomNodes(neighbours, config().getFanout());
     }
 
     @Override

@@ -126,22 +126,22 @@ public class GossipSimulator<T> {
     private void addRandomNeighbours(final GossipNode<T> source) {
         final int prevSize = source.getNeighbourhoodSize();
         final int count = rand(config.getMaxNeighbours()+1);
-        source.addNeighbours(randomNodes(nodes, count));
+        source.addNeighbours(getRandomNodes(nodes, count));
         LOGGER.debug(
                 "Added {} neighbours to {} from the max of {} configured.",
                 source.getNeighbourhoodSize()-prevSize, source, config.getMaxNeighbours());
     }
 
     /**
-     * Randomly selects a given number of nodes from a set.
+     * Randomly selects a given number of nodes from a collection.
      * If the requested number is greater or equal to the number of available nodes,
      * there is not need to randomly select them and all available nodes are returned.
      *
-     * @param availableNodes the set to randomly select nodes from
+     * @param availableNodes the collection to randomly select nodes from
      * @param count the number of random nodes to select
      * @return the collection of randomly selected nodes
      */
-    Collection<GossipNode<T>> randomNodes(final Collection<GossipNode<T>> availableNodes, final int count) {
+    public Collection<GossipNode<T>> getRandomNodes(final Collection<GossipNode<T>> availableNodes, final int count) {
         if(count >= availableNodes.size()){
             LOGGER.debug(
                     "It was requested the selection of {} random nodes but there are only {} available. Selecting all available ones.",
@@ -149,11 +149,26 @@ public class GossipSimulator<T> {
             return availableNodes;
         }
 
+        if(availableNodes instanceof List<GossipNode<T>> list){
+            return randomNodesFromList(list, count);
+        }
+
+        return randomNodesFromCollection(availableNodes, count);
+    }
+
+    private List<GossipNode<T>> randomNodesFromList(final List<GossipNode<T>> list, final int count) {
+        return IntStream.range(0, count)
+                  .map(i -> rand(list.size()))
+                  .mapToObj(list::get)
+                  .collect(toList());
+    }
+
+    private List<GossipNode<T>> randomNodesFromCollection(final Collection<GossipNode<T>> availableNodes, final int count) {
         /*An ordered set containing the indexes of the nodes selected randomly
         * from the collection of available nodes. */
         final Set<Integer> orderedIndexSet = IntStream.range(0, count)
-                                                     .mapToObj(i -> rand(availableNodes.size()))
-                                                     .collect(toCollection(TreeSet::new));
+                                                      .mapToObj(i -> rand(availableNodes.size()))
+                                                      .collect(toCollection(TreeSet::new));
 
         int i = 0;
         final List<GossipNode<T>> selectedNodes = new ArrayList<>(count);

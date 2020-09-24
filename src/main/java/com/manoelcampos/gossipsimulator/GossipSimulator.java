@@ -195,4 +195,13 @@ public class GossipSimulator<T> {
         return cycles;
     }
 
+    /**
+     * Checks if the simulation has already started,
+     * that is: if it has already run any cycle.
+     * @return
+     */
+    public boolean isStarted(){
+        return cycles > 0;
+    }
+
 }

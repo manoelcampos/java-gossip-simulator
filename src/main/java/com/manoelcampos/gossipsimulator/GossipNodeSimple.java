@@ -67,6 +67,11 @@ public class GossipNodeSimple<T> implements GossipNode<T> {
         return String.format("%" + digits + "d", count);
     }
 
+    /**
+     * Gets a collection of random nodes from the neighbourhood.
+     * The max number of nodes to select is defined by {@link GossipConfig#getFanout()}.
+     * @return
+     */
     private Collection<GossipNode<T>> getRandomNodes() {
         return simulator.randomNodes(neighbours, config().getFanout());
     }

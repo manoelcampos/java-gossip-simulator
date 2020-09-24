@@ -15,14 +15,15 @@ import static java.util.stream.Collectors.*;
  * network of Gossip nodes.
  *
  * @param <T> the type of the data the node shares
+ * @param <N> the type of nodes the simulator works with
  * @see #run()
  */
-public class GossipSimulator<T> {
+public class GossipSimulator<T, N extends GossipNode<T>> {
     public static final Logger LOGGER = LoggerFactory.getLogger(GossipSimulator.class.getSimpleName());
 
     private final GossipConfig config;
     private final RealDistribution random;
-    private final Set<GossipNode<T>> nodes;
+    private final Set<N> nodes;
     private int cycles;
     private int lastNodeId;
 
@@ -44,7 +45,7 @@ public class GossipSimulator<T> {
      * Gets the set of all known {@link GossipNode}s.
      * @return
      */
-    public Set<GossipNode<T>> getNodes(){
+    public Set<N> getNodes(){
         return Collections.unmodifiableSet(nodes);
     }
 
@@ -52,7 +53,7 @@ public class GossipSimulator<T> {
         return nodes.size();
     }
 
-    final void addNode(final GossipNode<T> neighbour) {
+    final void addNode(final N neighbour) {
         nodes.add(Objects.requireNonNull(neighbour));
     }
 
@@ -124,7 +125,7 @@ public class GossipSimulator<T> {
      * @param count the number of random nodes to select
      * @return the collection of randomly selected nodes
      */
-    Collection<GossipNode<T>> randomNodes(final Set<GossipNode<T>> availableNodes, final int count) {
+    Collection<N> randomNodes(final Set<N> availableNodes, final int count) {
         if(count >= availableNodes.size()){
             LOGGER.debug(
                     "It was requested the selection of {} random nodes but there are only {} available. Selecting all available ones.",
@@ -139,14 +140,14 @@ public class GossipSimulator<T> {
                                                      .collect(toCollection(TreeSet::new));
 
         int i = 0;
-        final List<GossipNode<T>> selectedNodes = new ArrayList<>(count);
-        final Iterator<GossipNode<T>> it = availableNodes.iterator();
+        final List<N> selectedNodes = new ArrayList<>(count);
+        final Iterator<N> it = availableNodes.iterator();
         /* Since the availableNodes set doesn't allow direct (indexed) access,
          * it's used an additional loop to get the next item
          * until we reach the i'th item inside that set. */
         for (final int selectedIndex : orderedIndexSet) {
             while(it.hasNext()){
-                final GossipNode<T> node = it.next();
+                final N node = it.next();
                 if(selectedIndex == i++) {
                     selectedNodes.add(node);
                     break;

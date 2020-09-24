@@ -62,7 +62,7 @@ public interface GossipNode<T> extends Comparable<GossipNode<T>>{
      * @param newNeighbours the nodes to add
      * @return true if the nodes were added, false if the given nodes area already in the neighbourhood
      */
-    boolean addNeighbours(Collection<GossipNode<T>> newNeighbours);
+    <N extends GossipNode<T>> boolean addNeighbours(Collection<N> newNeighbours);
 
     /**
      * Gets an unmodifiable Set of neighbours.
@@ -82,5 +82,5 @@ public interface GossipNode<T> extends Comparable<GossipNode<T>>{
      * Gets the Gossip simulator this node belongs to.
      * @return
      */
-    GossipSimulator<T> getSimulator();
+    <N extends GossipNode<T>> GossipSimulator<T, N> getSimulator();
 }

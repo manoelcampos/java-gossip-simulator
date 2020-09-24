@@ -22,14 +22,14 @@ public class GossipSimulator<T> {
 
     private final GossipConfig config;
     private final RealDistribution random;
-    private final Set<GossipNode<T>> nodes;
+    private final List<GossipNode<T>> nodes;
     private int cycles;
     private int lastNodeId;
 
     public GossipSimulator(final GossipConfig config, final RealDistribution random) {
         this.config = Objects.requireNonNull(config);
         this.random = Objects.requireNonNull(random);
-        this.nodes = new HashSet<>();
+        this.nodes = new LinkedList<>();
     }
 
     /**
@@ -41,19 +41,36 @@ public class GossipSimulator<T> {
     }
 
     /**
-     * Gets the set of all known {@link GossipNode}s.
+     * Gets the list of all known {@link GossipNode}s.
+     * It's not ensured the list has only unique nodes.
+     * You have to ensure that by not creating nodes
+     * with the same id.
+     *
+     * <p>
+     * A {@link Set} is not used here to reduce time
+     * complexity if you want to randomly select nodes
+     * from the {@link #getNodes() list}.
+     * Selecting random nodes from that list can be used,
+     * for instance, if you want to infect multiple
+     * nodes randomly before simulation startup.
+     * </p>
      * @return
      */
-    public Set<GossipNode<T>> getNodes(){
-        return Collections.unmodifiableSet(nodes);
+    public List<GossipNode<T>> getNodes(){
+        return Collections.unmodifiableList(nodes);
     }
 
     public int getNodesCount(){
         return nodes.size();
     }
 
-    final void addNode(final GossipNode<T> neighbour) {
-        nodes.add(Objects.requireNonNull(neighbour));
+    /**
+     * Adds a node to the simulator.
+     * You have to ensure not duplicated node is inserted.
+     * @param node the node to add
+     */
+    final void addNode(final GossipNode<T> node) {
+        nodes.add(Objects.requireNonNull(node));
     }
 
     public long getInfectedNodesNumber(){
@@ -124,7 +141,7 @@ public class GossipSimulator<T> {
      * @param count the number of random nodes to select
      * @return the collection of randomly selected nodes
      */
-    Collection<GossipNode<T>> randomNodes(final Set<GossipNode<T>> availableNodes, final int count) {
+    Collection<GossipNode<T>> randomNodes(final Collection<GossipNode<T>> availableNodes, final int count) {
         if(count >= availableNodes.size()){
             LOGGER.debug(
                     "It was requested the selection of {} random nodes but there are only {} available. Selecting all available ones.",

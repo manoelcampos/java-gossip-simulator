@@ -133,6 +133,18 @@ public class GossipSimulator<T> {
     }
 
     /**
+     * Randomly selects a given number of nodes from the available nodes.
+     * If the requested number is greater or equal to the number of available nodes,
+     * there is not need to randomly select them and all available nodes are returned.
+     *
+     * @param count the number of random nodes to select
+     * @return the collection of randomly selected nodes
+     */
+    public Collection<GossipNode<T>> getRandomNodes(final int count) {
+        return getRandomNodes(nodes, count);
+    }
+
+    /**
      * Randomly selects a given number of nodes from a collection.
      * If the requested number is greater or equal to the number of available nodes,
      * there is not need to randomly select them and all available nodes are returned.

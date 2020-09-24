@@ -77,4 +77,10 @@ public interface GossipNode<T> extends Comparable<GossipNode<T>>{
      * @return
      */
     boolean isInfected();
+
+    /**
+     * Gets the Gossip simulator this node belongs to.
+     * @return
+     */
+    GossipSimulator<T> getSimulator();
 }

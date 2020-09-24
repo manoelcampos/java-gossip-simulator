@@ -144,4 +144,9 @@ public class GossipNodeSimple<T> implements GossipNode<T> {
     public int compareTo(final GossipNode<T> o) {
         return Long.compare(this.id, o.getId());
     }
+
+    @Override
+    public GossipSimulator<T> getSimulator() {
+        return simulator;
+    }
 }

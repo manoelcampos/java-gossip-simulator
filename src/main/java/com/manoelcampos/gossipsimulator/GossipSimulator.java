@@ -126,7 +126,7 @@ public class GossipSimulator<T> {
     private void addRandomNeighbours(final GossipNode<T> source) {
         final int prevSize = source.getNeighbourhoodSize();
         final int count = rand(config.getMaxNeighbours()+1);
-        source.addNeighbours(getRandomNodes(nodes, count));
+        source.addNeighbours(getRandomNodes(count));
         LOGGER.debug(
                 "Added {} neighbours to {} from the max of {} configured.",
                 source.getNeighbourhoodSize()-prevSize, source, config.getMaxNeighbours());

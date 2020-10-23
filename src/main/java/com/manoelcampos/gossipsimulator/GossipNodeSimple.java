@@ -51,14 +51,14 @@ public class GossipNodeSimple<T> implements GossipNode<T> {
         * If we have 2 neighbours and the fanout is 4, we just select all the existing neighbours to
         * send messages to.*/
         final boolean sendToAllNeighbours = neighbours.size() < config().getFanout();
-        final Collection<GossipNode<T>> selected = sendToAllNeighbours ? neighbours : getRandomNodes();
+        final Collection<GossipNode<T>> selectedNeighbours = sendToAllNeighbours ? neighbours : getRandomNeighbours();
 
         LOGGER.info(
                 "{} is going to send a message to {} {} {}{}",
-                this, formatCount(selected.size()), sendToAllNeighbours ? "existing" : "randomly selected",
-                selected.size() > 1 ? "neighbours" : "neighbour",
+                this, formatCount(selectedNeighbours.size()), sendToAllNeighbours ? "existing" : "randomly selected",
+                selectedNeighbours.size() > 1 ? "neighbours" : "neighbour",
                 sendToAllNeighbours ? "" : " from total of " + formatCount(neighbours.size()));
-        selected.forEach(node -> node.receiveMessage(this, message));
+        selectedNeighbours.forEach(neighbour -> neighbour.receiveMessage(this, this.message));
         return true;
     }
 
@@ -72,7 +72,7 @@ public class GossipNodeSimple<T> implements GossipNode<T> {
      * The max number of nodes to select is defined by {@link GossipConfig#getFanout()}.
      * @return
      */
-    public Collection<GossipNode<T>> getRandomNodes() {
+    public Collection<GossipNode<T>> getRandomNeighbours() {
         return simulator.getRandomNodes(neighbours, config().getFanout());
     }
 

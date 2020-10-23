@@ -1,6 +1,7 @@
 package com.manoelcampos.gossipsimulator;
 
 import java.util.*;
+import java.util.function.BiFunction;
 
 import static java.util.Objects.requireNonNull;
 
@@ -13,15 +14,29 @@ public class GossipNodeSimple<T> implements GossipNode<T> {
     private final Set<GossipNode<T>> neighbours;
     private T message;
     private long id;
+    private BiFunction<GossipNode<T>, T, Boolean> messageAcceptanceFunction;
 
+    /**
+     * Instantiates a GossipNode that always accepts and stores received messages.
+     * It provides an automatic ID for the node.
+     * @param simulator the Gossip simulator this node will be attached to
+     * @see #setMessageAcceptanceFunction(BiFunction)
+     */
     public GossipNodeSimple(final GossipSimulator<T> simulator) {
         this(simulator, simulator.nextNodeId());
     }
 
+    /**
+     * Instantiates a GossipNode with a given ID, that always accepts and stores received messages.
+     * @param simulator the Gossip simulator this node will be attached to
+     * @param id the node ID to set
+     * @see #setMessageAcceptanceFunction(BiFunction)
+     */
     public GossipNodeSimple(final GossipSimulator<T> simulator, final long id) {
         this.simulator = requireNonNull(simulator);
         this.id = id;
         this.neighbours = new HashSet<>();
+        this.messageAcceptanceFunction = (node, data) -> true;
         simulator.addNode(this);
     }
 
@@ -58,7 +73,7 @@ public class GossipNodeSimple<T> implements GossipNode<T> {
                 this, formatCount(selectedNeighbours.size()), sendToAllNeighbours ? "existing" : "randomly selected",
                 selectedNeighbours.size() > 1 ? "neighbours" : "neighbour",
                 sendToAllNeighbours ? "" : " from total of " + formatCount(neighbours.size()));
-        selectedNeighbours.forEach(neighbour -> neighbour.receiveMessage(this, this.message));
+        selectedNeighbours.forEach(neighbour -> ((GossipNodeSimple<T>)neighbour).receiveMessage(this, this.message));
         return true;
     }
 
@@ -76,12 +91,30 @@ public class GossipNodeSimple<T> implements GossipNode<T> {
         return simulator.getRandomNodes(neighbours, config().getFanout());
     }
 
-    @Override
-    public void receiveMessage(final GossipNode<T> source, final T data) {
+    /**
+     * Receives a message from a source node and updates the list of know neighbours.
+     * By default, the received message is stored in the message attribute.
+     * <p>If you want to accept or not the message, provide a {@link java.util.function.BiFunction}
+     * where you can assess the acceptance of the message.
+     * Check {@link #setMessageAcceptanceFunction(BiFunction)}.
+     * </p>
+     *
+     * @param source the node sending the message
+     * @param data the data sent
+     */
+    void receiveMessage(final GossipNode<T> source, final T data) {
         //Updates the set of neighbour nodes
         neighbours.add(source);
-        this.message = data;
-        LOGGER.debug("{} received message from {}", this, source);
+
+        if(messageAcceptanceFunction.apply(source, data)) {
+            this.message = data;
+            LOGGER.debug("{} received message from {} accepted", this, source);
+        } else LOGGER.debug("{} received message from {} wasn't accepted", this, source);
+    }
+
+    @Override
+    public final void setMessageAcceptanceFunction(final BiFunction<GossipNode<T>, T, Boolean> function) {
+        this.messageAcceptanceFunction = Objects.requireNonNull(function);
     }
 
     @Override

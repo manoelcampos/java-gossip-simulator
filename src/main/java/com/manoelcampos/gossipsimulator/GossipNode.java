@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.Set;
+import java.util.function.BiFunction;
 
 /**
  * A node that shares {@link #getMessage() data}
@@ -44,11 +45,15 @@ public interface GossipNode<T> extends Comparable<GossipNode<T>>{
     boolean sendMessage();
 
     /**
-     * Receives a message from a source node and updates the list of know neighbours.
-     * @param source the node sending the message
-     * @param data the data sent
+     * A {@link BiFunction} where you can assess the acceptance of the message.
+     * That function will be called every time a message is received,
+     * where the sender node and the received message is provided.
+     * If you want to accept the message and let it be stored in the message attribute,
+     * just make this function return true.
+     * If you want to reject it, return false.
+     * @param function the function to assess the acceptance of received messages
      */
-    void receiveMessage(GossipNode<T> source, T data);
+    void setMessageAcceptanceFunction(BiFunction<GossipNode<T>, T, Boolean> function);
 
     /**
      * Adds a node as a neighbour

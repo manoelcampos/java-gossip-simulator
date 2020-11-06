@@ -17,7 +17,7 @@ otherwise it's a non-infected node 💚.
 
 ![Simulation Results](results.png)
 
-Check [this example](src/main/java/com/manoelcampos/gossipsimulator/examples/GossipSimulatorExample1.java) to know how it works.
+A complete [example is available here](src/main/java/com/manoelcampos/gossipsimulator/examples/GossipSimulatorExample1.java).
 
 ## 2. Links
 

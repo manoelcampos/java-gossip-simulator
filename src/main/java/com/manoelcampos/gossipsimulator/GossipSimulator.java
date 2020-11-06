@@ -110,8 +110,8 @@ public class GossipSimulator<T> {
                                        .count();
         if(messagesSent == 0) {
             LOGGER.warn(
-                    "No message was sent by the {} nodes because there is no infected node or their neighbourhood is empty.",
-                    nodes.size());
+                    "Cycle {}: No message was sent by any of the {} nodes, because there is no infected node or their neighbourhood is empty.",
+                    cycles, nodes.size());
         } else LOGGER.info(
                 "Number of infected nodes 🐞 after sending messages to {} nodes: {} of {} (cycle {})",
                 messagesSent, getInfectedNodesNumber(), nodes.size(), cycles);

@@ -119,7 +119,8 @@ public class GossipSimulator<T> {
 
     /**
      * Adds randomly selected neighbours to a source node,
-     * according to the {@link GossipConfig#getMaxNeighbours()}.
+     * according to the {@link GossipConfig#getMaxNeighbours()},
+     * to create the initial neighborhood.
      *
      * @param source the node to add neighbours to
      */
@@ -133,7 +134,8 @@ public class GossipSimulator<T> {
     }
 
     /**
-     * Randomly selects a given number of nodes from the available nodes.
+     * Randomly selects a given number of nodes from the
+     * list of all available nodes.
      * If the requested number is greater or equal to the number of available nodes,
      * there is not need to randomly select them and all available nodes are returned.
      *

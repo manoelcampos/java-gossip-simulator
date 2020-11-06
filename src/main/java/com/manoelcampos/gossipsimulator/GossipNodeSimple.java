@@ -127,7 +127,19 @@ public class GossipNodeSimple<T> implements GossipNode<T> {
 
     @Override
     public boolean addNeighbours(final Collection<GossipNode<T>> newNeighbours) {
-        return neighbours.addAll(requireNonNull(newNeighbours));
+        /*If this node is inside the newNeighbours collection, removes it.
+          A node cannot exchange messages with itself.
+          If we try to remove this node from newNeighbours and
+          no removal is performed or there is more than one element
+          in the newNeighbours, at least one element was added to the neighbourhood.
+          The remove() call must be placed first to ensure we always remove
+          this node from its neighborhood (if it's in there).
+        */
+        if(neighbours.addAll(requireNonNull(newNeighbours))){
+            return !neighbours.remove(this) || newNeighbours.size() > 1;
+        }
+
+        return false;
     }
 
     @Override

@@ -70,6 +70,13 @@ public interface GossipNode<T> extends Comparable<GossipNode<T>>{
     boolean addNeighbours(Collection<GossipNode<T>> newNeighbours);
 
     /**
+     * Adds randomly selected neighbours to this node,
+     * according to the {@link GossipConfig#getMaxNeighbors()},
+     * to create the initial neighborhood.
+     */
+    void addRandomNeighbors();
+
+    /**
      * Gets an unmodifiable Set of neighbours.
      * @return
      */

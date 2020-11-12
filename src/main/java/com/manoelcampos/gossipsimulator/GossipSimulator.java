@@ -93,14 +93,12 @@ public class GossipSimulator<T> {
      */
     public void run() {
         if(cycles++ == 0){
-            if(nodes.size() <= config.getMaxNeighbours()) {
+            if(nodes.size() <= config.getMaxNeighbors()) {
                 LOGGER.warn(
                     "The number of existing nodes ({}) is lower than the max number of neighbours by node ({}). Using the number of nodes as max neighborhood size.",
-                    nodes.size(), config.getMaxNeighbours());
-                config.setMaxNeighbours(nodes.size());
+                    nodes.size(), config.getMaxNeighbors());
+                config.setMaxNeighbors(nodes.size());
             }
-
-            nodes.forEach(this::addRandomNeighbours);
         }
 
         LOGGER.info("Running simulation cycle {}", cycles);
@@ -115,22 +113,6 @@ public class GossipSimulator<T> {
         } else LOGGER.info(
                 "Number of infected nodes 🐞 after sending messages to {} nodes: {} of {} (cycle {})",
                 messagesSent, getInfectedNodesNumber(), nodes.size(), cycles);
-    }
-
-    /**
-     * Adds randomly selected neighbours to a source node,
-     * according to the {@link GossipConfig#getMaxNeighbours()},
-     * to create the initial neighborhood.
-     *
-     * @param source the node to add neighbours to
-     */
-    private void addRandomNeighbours(final GossipNode<T> source) {
-        final int prevSize = source.getNeighbourhoodSize();
-        final int count = rand(config.getMaxNeighbours())+1;
-        source.addNeighbours(getRandomNodes(count));
-        LOGGER.debug(
-                "Added {} neighbours to {} from the max of {} configured.",
-                source.getNeighbourhoodSize()-prevSize, source, config.getMaxNeighbours());
     }
 
     /**

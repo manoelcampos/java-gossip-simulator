@@ -143,6 +143,17 @@ public class GossipNodeSimple<T> implements GossipNode<T> {
     }
 
     @Override
+    public void addRandomNeighbors() {
+        final int prevSize = getNeighbourhoodSize();
+        final var config = simulator.getConfig();
+        final int count = simulator.rand(config.getMaxNeighbors())+1;
+        addNeighbours(simulator.getRandomNodes(count));
+        LOGGER.debug(
+                "Added {} neighbours to {} from the max of {} configured.",
+                getNeighbourhoodSize()-prevSize, this, config.getMaxNeighbors());
+    }
+
+    @Override
     public Set<GossipNode<T>> getNeighbours() {
         return Collections.unmodifiableSet(neighbours);
     }

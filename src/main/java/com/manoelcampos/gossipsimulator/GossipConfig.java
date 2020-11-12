@@ -6,31 +6,32 @@ package com.manoelcampos.gossipsimulator;
  */
 public class GossipConfig {
     private final int fanout;
-    private int maxNeighbours;
+    private int minNeighbors;
+    private int maxNeighbors;
 
     /**
      * Instantiates a gossip config.
      * @param fanout the number of nodes to randomly spread information to
-     * @param maxNeighbours the maximum number of neighbours a node will be linked to.
+     * @param maxNeighbors the maximum number of neighbours a node will be linked to.
      */
-    public GossipConfig(final int fanout, final int maxNeighbours) {
+    public GossipConfig(final int fanout, final int maxNeighbors) {
         if(fanout <= 0){
             throw new IllegalArgumentException("Fanout must be greater than 0.");
         }
 
-        if(maxNeighbours <= 0){
+        if(maxNeighbors <= 0){
             throw new IllegalArgumentException("Max number of neighbours must be greater than 0.");
         }
 
-        if(maxNeighbours <= fanout){
+        if(maxNeighbors <= fanout){
             throw new IllegalArgumentException(
                 String.format(
                         "Max number of neighbours (%d) must be greater than the fanout (%d).",
-                        maxNeighbours, fanout));
+                        maxNeighbors, fanout));
         }
 
         this.fanout = fanout;
-        this.maxNeighbours = maxNeighbours;
+        this.maxNeighbors = maxNeighbors;
     }
 
     /**
@@ -42,14 +43,36 @@ public class GossipConfig {
     }
 
     /**
-     * Gets the max number of neighbours a node will be linked to.
+     * Gets the maximum number of neighbours a node will be linked to.
      * @return
      */
-    public int getMaxNeighbours() {
-        return maxNeighbours;
+    public int getMaxNeighbors() {
+        return maxNeighbors;
     }
 
-    final void setMaxNeighbours(final int maxNeighbours) {
-        this.maxNeighbours = maxNeighbours;
+    final void setMaxNeighbors(final int maxNeighbors) {
+        this.maxNeighbors = maxNeighbors;
+    }
+
+    /**
+     * Gets the minimum number of neighbours
+     * that can randomly be selected to a node.
+     * @return
+     * @see GossipNode#addRandomNeighbors()
+     */
+    public int getMinNeighbors() {
+        return minNeighbors;
+    }
+
+    /**
+     * Sets the minimum number of neighbours
+     * that can randomly be selected to a node.
+     * @see GossipNode#addRandomNeighbors()
+     */
+    public void setMinNeighbors(final int minNeighbors) {
+        if(minNeighbors < 0)
+            throw new IllegalArgumentException("Min number of neighbors must not be negative.");
+
+        this.minNeighbors = minNeighbors;
     }
 }

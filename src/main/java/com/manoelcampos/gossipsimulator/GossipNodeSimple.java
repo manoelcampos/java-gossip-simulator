@@ -146,7 +146,7 @@ public class GossipNodeSimple<T> implements GossipNode<T> {
     public void addRandomNeighbors() {
         final int prevSize = getNeighbourhoodSize();
         final var config = simulator.getConfig();
-        final int count = simulator.rand(config.getMaxNeighbors())+1;
+        final int count = simulator.rand(config.getMaxNeighbors())+config.getMinNeighbors();
         addNeighbours(simulator.getRandomNodes(count));
         LOGGER.debug(
                 "Added {} neighbours to {} from the max of {} configured.",

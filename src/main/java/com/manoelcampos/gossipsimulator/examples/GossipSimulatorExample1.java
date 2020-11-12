@@ -29,6 +29,8 @@ public class GossipSimulatorExample1 {
         nodes = createNodes();
         infectRandomNode("Msg " + simulator.rand());
 
+        nodes.forEach(GossipNode::addRandomNeighbors);
+
         System.out.println();
         for (int i = 0; i < CYCLES; i++) {
             System.out.println();

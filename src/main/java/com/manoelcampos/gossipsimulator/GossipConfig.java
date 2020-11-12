@@ -6,7 +6,7 @@ package com.manoelcampos.gossipsimulator;
  */
 public class GossipConfig {
     private final int fanout;
-    private final int maxNeighbours;
+    private int maxNeighbours;
 
     /**
      * Instantiates a gossip config.
@@ -49,4 +49,7 @@ public class GossipConfig {
         return maxNeighbours;
     }
 
+    final void setMaxNeighbours(final int maxNeighbours) {
+        this.maxNeighbours = maxNeighbours;
+    }
 }

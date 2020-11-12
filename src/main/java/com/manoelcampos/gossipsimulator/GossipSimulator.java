@@ -95,7 +95,7 @@ public class GossipSimulator<T> {
         if(cycles++ == 0){
             if(nodes.size() <= config.getMaxNeighbours()) {
                 LOGGER.warn(
-                    "The number of existing nodes ({}) is lower than the number of neighbours by node ({}). Using the number of nodes as max neighborhood size.",
+                    "The number of existing nodes ({}) is lower than the max number of neighbours by node ({}). Using the number of nodes as max neighborhood size.",
                     nodes.size(), config.getMaxNeighbours());
                 config.setMaxNeighbours(nodes.size());
             }

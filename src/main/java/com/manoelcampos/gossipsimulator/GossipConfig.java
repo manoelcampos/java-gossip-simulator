@@ -12,7 +12,7 @@ public class GossipConfig {
     /**
      * Instantiates a gossip config.
      * @param fanout the number of nodes to randomly spread information to
-     * @param maxNeighbors the maximum number of neighbours a node will be linked to.
+     * @param maxNeighbors the maximum number of neighbors a node will be linked to.
      */
     public GossipConfig(final int fanout, final int maxNeighbors) {
         if(fanout <= 0){
@@ -20,13 +20,13 @@ public class GossipConfig {
         }
 
         if(maxNeighbors <= 0){
-            throw new IllegalArgumentException("Max number of neighbours must be greater than 0.");
+            throw new IllegalArgumentException("Max number of neighbors must be greater than 0.");
         }
 
         if(maxNeighbors <= fanout){
             throw new IllegalArgumentException(
                 String.format(
-                        "Max number of neighbours (%d) must be greater than the fanout (%d).",
+                        "Max number of neighbors (%d) must be greater than the fanout (%d).",
                         maxNeighbors, fanout));
         }
 
@@ -43,7 +43,7 @@ public class GossipConfig {
     }
 
     /**
-     * Gets the maximum number of neighbours a node will be linked to.
+     * Gets the maximum number of neighbors a node will be linked to.
      * @return
      */
     public int getMaxNeighbors() {
@@ -55,7 +55,7 @@ public class GossipConfig {
     }
 
     /**
-     * Gets the minimum number of neighbours
+     * Gets the minimum number of neighbors
      * that can randomly be selected to a node.
      * @return
      * @see GossipNode#addRandomNeighbors()
@@ -65,7 +65,7 @@ public class GossipConfig {
     }
 
     /**
-     * Sets the minimum number of neighbours
+     * Sets the minimum number of neighbors
      * that can randomly be selected to a node.
      * @see GossipNode#addRandomNeighbors()
      */

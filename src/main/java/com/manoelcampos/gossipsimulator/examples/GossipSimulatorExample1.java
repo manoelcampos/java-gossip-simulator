@@ -15,7 +15,7 @@ public class GossipSimulatorExample1 {
     private static final int NODES_COUNT = 40;
     private static final int CYCLES = 10;
     private static final int FANOUT = 4;
-    private static final int MAX_NEIGHBOURS = 20;
+    private static final int MAX_NEIGHBORS = 20;
     private final GossipSimulator<String> simulator;
     private final List<GossipNode<String>> nodes;
 
@@ -23,7 +23,7 @@ public class GossipSimulatorExample1 {
         //Comment this line to use the default logging level
         GossipSimulator.setLoggerLevel(ch.qos.logback.classic.Level.INFO);
 
-        final GossipConfig config = new GossipConfig(FANOUT, MAX_NEIGHBOURS);
+        final GossipConfig config = new GossipConfig(FANOUT, MAX_NEIGHBORS);
         simulator = new GossipSimulator<>(config, new UniformRealDistribution());
 
         nodes = createNodes();

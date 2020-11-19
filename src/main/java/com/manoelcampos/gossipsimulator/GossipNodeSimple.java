@@ -11,7 +11,7 @@ import static java.util.Objects.requireNonNull;
  */
 public class GossipNodeSimple<T> implements GossipNode<T> {
     private final GossipSimulator<T> simulator;
-    private final Set<GossipNode<T>> neighbours;
+    private final Set<GossipNode<T>> neighbors;
     private T message;
     private long id;
     private BiFunction<GossipNode<T>, T, Boolean> messageAcceptanceFunction;
@@ -35,7 +35,7 @@ public class GossipNodeSimple<T> implements GossipNode<T> {
     public GossipNodeSimple(final GossipSimulator<T> simulator, final long id) {
         this.simulator = requireNonNull(simulator);
         this.id = id;
-        this.neighbours = new HashSet<>();
+        this.neighbors = new HashSet<>();
         this.messageAcceptanceFunction = (node, data) -> true;
         simulator.addNode(this);
     }
@@ -56,24 +56,24 @@ public class GossipNodeSimple<T> implements GossipNode<T> {
             return false;
         }
 
-        if(neighbours.isEmpty()){
-            LOGGER.warn("{} has no neighbours to send messages to", this);
+        if(neighbors.isEmpty()){
+            LOGGER.warn("{} has no neighbors to send messages to", this);
             return false;
         }
 
-        /*If the number of known neighbours is lower than the number of random neighbours to select,
-        * it doesn't make sense to select neighbours randomly.
-        * If we have 2 neighbours and the fanout is 4, we just select all the existing neighbours to
+        /*If the number of known neighbors is lower than the number of random neighbors to select,
+        * it doesn't make sense to select neighbors randomly.
+        * If we have 2 neighbors and the fanout is 4, we just select all the existing neighbors to
         * send messages to.*/
-        final boolean sendToAllNeighbours = neighbours.size() < config().getFanout();
-        final Collection<GossipNode<T>> selectedNeighbours = sendToAllNeighbours ? neighbours : getRandomNeighbours();
+        final boolean sendToAllNeighbors = neighbors.size() < config().getFanout();
+        final Collection<GossipNode<T>> selectedNeighbors = sendToAllNeighbors ? neighbors : getRandomNeighbors();
 
         LOGGER.info(
                 "{} is going to send a message to {} {} {}{}",
-                this, formatCount(selectedNeighbours.size()), sendToAllNeighbours ? "existing" : "randomly selected",
-                selectedNeighbours.size() > 1 ? "neighbours" : "neighbour",
-                sendToAllNeighbours ? "" : " from total of " + formatCount(neighbours.size()));
-        selectedNeighbours.forEach(neighbour -> ((GossipNodeSimple<T>)neighbour).receiveMessage(this, this.message));
+                this, formatCount(selectedNeighbors.size()), sendToAllNeighbors ? "existing" : "randomly selected",
+                selectedNeighbors.size() > 1 ? "neighbors" : "neighbor",
+                sendToAllNeighbors ? "" : " from total of " + formatCount(neighbors.size()));
+        selectedNeighbors.forEach(neighbor -> ((GossipNodeSimple<T>)neighbor).receiveMessage(this, this.message));
         return true;
     }
 
@@ -83,16 +83,16 @@ public class GossipNodeSimple<T> implements GossipNode<T> {
     }
 
     /**
-     * Gets a collection of random nodes from the neighbourhood.
+     * Gets a collection of random nodes from the neighborhood.
      * The max number of nodes to select is defined by {@link GossipConfig#getFanout()}.
      * @return
      */
-    public Collection<GossipNode<T>> getRandomNeighbours() {
-        return simulator.getRandomNodes(neighbours, config().getFanout());
+    public Collection<GossipNode<T>> getRandomNeighbors() {
+        return simulator.getRandomNodes(neighbors, config().getFanout());
     }
 
     /**
-     * Receives a message from a source node and updates the list of know neighbours.
+     * Receives a message from a source node and updates the list of know neighbors.
      * By default, the received message is stored in the message attribute.
      * <p>If you want to accept or not the message, provide a {@link java.util.function.BiFunction}
      * where you can assess the acceptance of the message.
@@ -103,8 +103,8 @@ public class GossipNodeSimple<T> implements GossipNode<T> {
      * @param data the data sent
      */
     void receiveMessage(final GossipNode<T> source, final T data) {
-        //Updates the set of neighbour nodes
-        neighbours.add(source);
+        //Updates the set of neighbor nodes
+        neighbors.add(source);
 
         if(messageAcceptanceFunction.apply(source, data)) {
             this.message = data;
@@ -118,25 +118,25 @@ public class GossipNodeSimple<T> implements GossipNode<T> {
     }
 
     @Override
-    public boolean addNeighbour(final GossipNode<T> neighbour) {
-        if(this.equals(neighbour))
+    public boolean addNeighbor(final GossipNode<T> neighbor) {
+        if(this.equals(neighbor))
             return false;
 
-        return neighbours.add(requireNonNull(neighbour));
+        return neighbors.add(requireNonNull(neighbor));
     }
 
     @Override
-    public boolean addNeighbours(final Collection<GossipNode<T>> newNeighbours) {
-        /*If this node is inside the newNeighbours collection, removes it.
+    public boolean addNeighbors(final Collection<GossipNode<T>> newNeighbors) {
+        /*If this node is inside the newNeighbors collection, removes it.
           A node cannot exchange messages with itself.
-          If we try to remove this node from newNeighbours and
+          If we try to remove this node from newNeighbors and
           no removal is performed or there is more than one element
-          in the newNeighbours, at least one element was added to the neighbourhood.
+          in the newNeighbors, at least one element was added to the neighborhood.
           The remove() call must be placed first to ensure we always remove
           this node from its neighborhood (if it's in there).
         */
-        if(neighbours.addAll(requireNonNull(newNeighbours))){
-            return !neighbours.remove(this) || newNeighbours.size() > 1;
+        if(neighbors.addAll(requireNonNull(newNeighbors))){
+            return !neighbors.remove(this) || newNeighbors.size() > 1;
         }
 
         return false;
@@ -144,23 +144,23 @@ public class GossipNodeSimple<T> implements GossipNode<T> {
 
     @Override
     public void addRandomNeighbors() {
-        final int prevSize = getNeighbourhoodSize();
+        final int prevSize = getNeighborhoodSize();
         final var config = simulator.getConfig();
         final int count = simulator.rand(config.getMaxNeighbors())+config.getMinNeighbors();
-        addNeighbours(simulator.getRandomNodes(count));
+        addNeighbors(simulator.getRandomNodes(count));
         LOGGER.debug(
-                "Added {} neighbours to {} from the max of {} configured.",
-                getNeighbourhoodSize()-prevSize, this, config.getMaxNeighbors());
+                "Added {} neighbors to {} from the max of {} configured.",
+                getNeighborhoodSize()-prevSize, this, config.getMaxNeighbors());
     }
 
     @Override
-    public Set<GossipNode<T>> getNeighbours() {
-        return Collections.unmodifiableSet(neighbours);
+    public Set<GossipNode<T>> getNeighbors() {
+        return Collections.unmodifiableSet(neighbors);
     }
 
     @Override
-    public int getNeighbourhoodSize() {
-        return neighbours.size();
+    public int getNeighborhoodSize() {
+        return neighbors.size();
     }
 
     @Override

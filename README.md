@@ -11,7 +11,7 @@ network communication, not even in localhost.
 ## 1. Examples
 
 The figure below shows an example of the output for a simulation cycle,
-where nodes send a message to their neighbours.
+where nodes send a message to their neighbors.
 An infected node 🐞 is that one which has already received a message,
 otherwise it's a non-infected node 💚.
 

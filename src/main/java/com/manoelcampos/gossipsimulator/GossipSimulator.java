@@ -83,7 +83,7 @@ public class GossipSimulator<T> {
 
     /**
      * Runs a {@link #getCycles() cycle} of the Gossip transmissions,
-     * making all infected nodes to send the data to their neighbours.
+     * making all infected nodes to send the data to their neighbors.
      * If you want to run multiple cycles, you need to call this method
      * inside a loop with the stop condition you want.
      * For instance, you may want to run a fixed number of cycles
@@ -95,7 +95,7 @@ public class GossipSimulator<T> {
         if(cycles++ == 0){
             if(nodes.size() < config.getMaxNeighbors()) {
                 LOGGER.warn(
-                    "The number of existing nodes ({}) is lower than the max number of neighbours by node ({}). Using the number of nodes as max neighborhood size.",
+                    "The number of existing nodes ({}) is lower than the max number of neighbors by node ({}). Using the number of nodes as max neighborhood size.",
                     nodes.size(), config.getMaxNeighbors());
                 config.setMaxNeighbors(nodes.size());
             }
@@ -108,7 +108,7 @@ public class GossipSimulator<T> {
                                        .count();
         if(messagesSent == 0) {
             LOGGER.warn(
-                    "Cycle {}: No message was sent by any of the {} nodes, because there is no infected node or their neighbourhood is empty.",
+                    "Cycle {}: No message was sent by any of the {} nodes, because there is no infected node or their neighborhood is empty.",
                     cycles, nodes.size());
         } else LOGGER.info(
                 "Number of infected nodes 🐞 after sending messages to {} nodes: {} of {} (cycle {})",

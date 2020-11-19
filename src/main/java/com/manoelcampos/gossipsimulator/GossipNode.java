@@ -9,7 +9,7 @@ import java.util.function.BiFunction;
 
 /**
  * A node that shares {@link #getMessage() data}
- * across its {@link #getNeighbours() neighbourhood} using the Gossip Protocol.
+ * across its {@link #getNeighbors() neighborhood} using the Gossip Protocol.
  *
  * @param <T> the type of the data the node shares
  */
@@ -21,7 +21,7 @@ public interface GossipNode<T> extends Comparable<GossipNode<T>>{
     /**
      * Gets the latest message the node is storing.
      * This data may have been generated for this node or received
-     * by other nodes, in order to spread such a data through the neighbourhood.
+     * by other nodes, in order to spread such a data through the neighborhood.
      * @return the latest message stored or null if the node was never infected (if a message or
      *         never received from another node or manually set.
      * @see #sendMessage()
@@ -29,7 +29,7 @@ public interface GossipNode<T> extends Comparable<GossipNode<T>>{
     T getMessage();
 
     /**
-     * Stores a message to be sent to nodes in the neighbourhood.
+     * Stores a message to be sent to nodes in the neighborhood.
      * @param message
      * @see #sendMessage()
      */
@@ -37,7 +37,7 @@ public interface GossipNode<T> extends Comparable<GossipNode<T>>{
 
     /**
      * Sends a {@link #getMessage() stored message} to {@link GossipConfig#getFanout() N (fanout)} randomly selected nodes
-     * in the {@link #getNeighbours() neighbourhood}.
+     * in the {@link #getNeighbors() neighborhood}.
      * @return true if the node has some message to send and it was sent,
      *         false otherwise
      * @see #getMessage()
@@ -56,33 +56,33 @@ public interface GossipNode<T> extends Comparable<GossipNode<T>>{
     void setMessageAcceptanceFunction(BiFunction<GossipNode<T>, T, Boolean> function);
 
     /**
-     * Adds a node as a neighbour
-     * @param neighbour the node to add
+     * Adds a node as a neighbor
+     * @param neighbor the node to add
      * @return true if the node was added, false it the given node is this one
      */
-    boolean addNeighbour(GossipNode<T> neighbour);
+    boolean addNeighbor(GossipNode<T> neighbor);
 
     /**
-     * Adds a collection of nodes as neighbours
-     * @param newNeighbours the nodes to add
-     * @return true if the nodes were added, false if the given nodes area already in the neighbourhood
+     * Adds a collection of nodes as neighbors
+     * @param newNeighbors the nodes to add
+     * @return true if the nodes were added, false if the given nodes area already in the neighborhood
      */
-    boolean addNeighbours(Collection<GossipNode<T>> newNeighbours);
+    boolean addNeighbors(Collection<GossipNode<T>> newNeighbors);
 
     /**
-     * Adds randomly selected neighbours to this node,
+     * Adds randomly selected neighbors to this node,
      * according to the {@link GossipConfig#getMaxNeighbors()},
      * to create the initial neighborhood.
      */
     void addRandomNeighbors();
 
     /**
-     * Gets an unmodifiable Set of neighbours.
+     * Gets an unmodifiable Set of neighbors.
      * @return
      */
-    Set<GossipNode<T>> getNeighbours();
+    Set<GossipNode<T>> getNeighbors();
 
-    int getNeighbourhoodSize();
+    int getNeighborhoodSize();
 
     /**
      * Indicates if the node has received any data already.

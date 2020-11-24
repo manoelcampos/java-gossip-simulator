@@ -7,7 +7,7 @@ import static java.util.Objects.requireNonNull;
 
 /**
  * A basic implementation of a {@link GossipNode}.
- * @param <T> the type of the data the node shares
+ * @param <T> the type of the data the node shares, the must be the same of the {@link GossipSimulator}.
  * @author Manoel Campos da Silva Filho
  */
 public class GossipNodeSimple<T> implements GossipNode<T> {

@@ -16,6 +16,7 @@ import static java.util.stream.Collectors.*;
  *
  * @param <T> the type of the data the node shares
  * @see #run()
+ * @author Manoel Campos da Silva Filho
  */
 public class GossipSimulator<T> {
     public static final Logger LOGGER = LoggerFactory.getLogger(GossipSimulator.class.getSimpleName());

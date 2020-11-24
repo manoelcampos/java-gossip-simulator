@@ -3,6 +3,7 @@ package com.manoelcampos.gossipsimulator;
 /**
  * Gossip Protocol configuration.
  * It defines a set of parameters used to run a simulation.
+ * @author Manoel Campos da Silva Filho
  */
 public class GossipConfig {
     private final int fanout;

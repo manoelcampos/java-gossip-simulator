@@ -12,6 +12,7 @@ import java.util.function.BiFunction;
  * across its {@link #getNeighbors() neighborhood} using the Gossip Protocol.
  *
  * @param <T> the type of the data the node shares
+ * @author Manoel Campos da Silva Filho
  */
 public interface GossipNode<T> extends Comparable<GossipNode<T>>{
     Logger LOGGER = LoggerFactory.getLogger(GossipNode.class.getSimpleName());

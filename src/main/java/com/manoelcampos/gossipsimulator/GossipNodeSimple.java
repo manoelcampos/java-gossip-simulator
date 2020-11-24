@@ -164,6 +164,11 @@ public class GossipNodeSimple<T> implements GossipNode<T> {
     }
 
     @Override
+    public boolean hasNeighbors() {
+        return !neighbors.isEmpty();
+    }
+
+    @Override
     public T getMessage() {
         return message;
     }

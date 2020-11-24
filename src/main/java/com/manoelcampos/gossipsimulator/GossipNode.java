@@ -85,6 +85,12 @@ public interface GossipNode<T> extends Comparable<GossipNode<T>>{
     int getNeighborhoodSize();
 
     /**
+     * Indicates if the node has any neighbor.
+     * @return
+     */
+    boolean hasNeighbors();
+
+    /**
      * Indicates if the node has received any data already.
      * @return
      */

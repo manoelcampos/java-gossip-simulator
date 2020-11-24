@@ -111,17 +111,16 @@ public class GossipSimulator<T> {
         }
 
         LOGGER.info("Running simulation cycle {}", cycles);
-        final long messagesSent = nodes.stream()
-                                       .filter(GossipNode::isInfected)
-                                       .filter(GossipNode::sendMessage)
-                                       .count();
-        if(messagesSent == 0) {
+        final var tracker = new InfectionTracker<>(this);
+        if (tracker.sendMessages()) {
+            LOGGER.info(
+                    "Number of infected nodes 🐞 after sending messages to {} nodes: {} of {} (cycle {})",
+                    tracker.getSentMsgNumber(), getInfectedNodesNumber(), nodes.size(), cycles);
+        } else {
             LOGGER.warn(
-                    "Cycle {}: No message was sent by any of the {} nodes, because there is no infected node or their neighborhood is empty.",
-                    cycles, nodes.size());
-        } else LOGGER.info(
-                "Number of infected nodes 🐞 after sending messages to {} nodes: {} of {} (cycle {})",
-                messagesSent, getInfectedNodesNumber(), nodes.size(), cycles);
+                    "Cycle {}: No message was sent by any of the {} nodes, because {}.",
+                    cycles, nodes.size(), tracker.getNoMsgSentReason());
+        }
     }
 
     /**

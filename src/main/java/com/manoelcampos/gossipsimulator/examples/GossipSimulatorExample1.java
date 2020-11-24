@@ -32,6 +32,17 @@ public class GossipSimulatorExample1 {
         nodes.forEach(GossipNode::addRandomNeighbors);
 
         System.out.println();
+        runSimulation();
+    }
+
+    /**
+     * Runs multiple simulation cycles until some condition is met.
+     * That condition depends on your needs.
+     * For instance, you could iterate until
+     * all nodes are infected.
+     *
+     * @see GossipSimulator#isAllNodesInfected() */
+    private void runSimulation() {
         for (int i = 0; i < CYCLES; i++) {
             System.out.println();
             simulator.run();

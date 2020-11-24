@@ -78,6 +78,14 @@ public class GossipSimulator<T> {
         return nodes.stream().filter(GossipNode::isInfected).count();
     }
 
+    /**
+     * Checks if all existing nodes were already infected or not.
+     * @return
+     */
+    public boolean isAllNodesInfected(){
+        return getInfectedNodesNumber() == nodes.size();
+    }
+
     public GossipConfig getConfig() {
         return config;
     }

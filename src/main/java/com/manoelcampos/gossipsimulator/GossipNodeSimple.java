@@ -108,7 +108,7 @@ public class GossipNodeSimple<T> implements GossipNode<T> {
         neighbors.add(source);
 
         if(messageAcceptanceFunction.apply(source, data)) {
-            this.message = data;
+            setMessage(data);
             LOGGER.debug("{} received message from {} accepted", this, source);
         } else LOGGER.debug("{} received message from {} wasn't accepted", this, source);
     }

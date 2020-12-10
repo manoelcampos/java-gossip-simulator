@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 import java.util.stream.IntStream;
 
-import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.toCollection;
 
 /**
  * Simulates the dissemination of data across a
@@ -137,13 +137,13 @@ public class GossipSimulator<T> {
     }
 
     /**
-     * Randomly selects a given number of nodes from a collection.
+     * Randomly selects a given number of nodes from a collection, without repeating selected nodes.
      * If the requested number is greater or equal to the number of available nodes,
      * there is not need to randomly select them and all available nodes are returned.
      *
      * @param sourceNodes the collection to randomly select nodes from
-     * @param count the number of random nodes to select
-     * @return the collection of randomly selected nodes
+     * @param count the max number of random nodes to select
+     * @return the collection of unique randomly selected nodes
      */
     public Collection<GossipNode<T>> getRandomNodes(final Collection<GossipNode<T>> sourceNodes, final int count) {
         if(count >= sourceNodes.size()){
@@ -160,11 +160,17 @@ public class GossipSimulator<T> {
         return randomNodesFromCollection(sourceNodes, count);
     }
 
-    private List<GossipNode<T>> randomNodesFromList(final List<GossipNode<T>> list, final int count) {
+    /**
+     * Selects a given number of random nodes from a list, without repeating selected nodes.
+     * @param list the list of nodes to randomly select elements from
+     * @param count the max number of random nodes to select
+     * @return the Set of unique random selected nodes
+     */
+    private Set<GossipNode<T>> randomNodesFromList(final List<GossipNode<T>> list, final int count) {
         return IntStream.range(0, count)
                   .map(i -> rand(list.size()))
                   .mapToObj(list::get)
-                  .collect(toList());
+                  .collect(toCollection(() -> new HashSet<>(count)));
     }
 
     private List<GossipNode<T>> randomNodesFromCollection(final Collection<GossipNode<T>> availableNodes, final int count) {

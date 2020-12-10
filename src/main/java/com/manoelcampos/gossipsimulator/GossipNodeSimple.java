@@ -84,7 +84,7 @@ public class GossipNodeSimple<T> implements GossipNode<T> {
     }
 
     /**
-     * Gets a collection of random nodes from the neighborhood.
+     * Gets a collection of random nodes from the neighborhood, without repeating selected nodes.
      * The max number of nodes to select is defined by {@link GossipConfig#getFanout()}.
      * @return
      */

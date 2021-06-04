@@ -1,4 +1,5 @@
 /target/
+deploy.sh
 
 # IntelliJ Files
 .idea

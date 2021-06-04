@@ -3,6 +3,7 @@ package com.manoelcampos.gossipsimulator;
 import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
 
@@ -139,6 +140,17 @@ public class GossipNodeSimple<T> implements GossipNode<T> {
         */
         if(neighbors.addAll(requireNonNull(newNeighbors))){
             return !neighbors.remove(this) || newNeighbors.size() > 1;
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean addNeighbors(final Stream<GossipNode<T>> newNeighbors) {
+        final int added = newNeighbors.map(neighbors::add).mapToInt(success -> success ? 1 : 0).sum();
+
+        if(added > 0){
+            return !neighbors.remove(this) || added > 1;
         }
 
         return false;

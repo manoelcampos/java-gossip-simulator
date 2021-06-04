@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 /**
  * A node that shares {@link #getMessage() data}
@@ -70,6 +71,13 @@ public interface GossipNode<T> extends Comparable<GossipNode<T>>{
      * @return true if the nodes were added, false if the given nodes area already in the neighborhood
      */
     boolean addNeighbors(Collection<GossipNode<T>> newNeighbors);
+
+    /**
+     * Adds a stream of nodes as neighbors
+     * @param newNeighbors the nodes to add
+     * @return true if the nodes were added, false if the given nodes area already in the neighborhood
+     */
+    boolean addNeighbors(Stream<GossipNode<T>> newNeighbors);
 
     /**
      * Adds randomly selected neighbors to this node,

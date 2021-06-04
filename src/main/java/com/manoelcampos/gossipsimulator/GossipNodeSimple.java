@@ -2,6 +2,7 @@ package com.manoelcampos.gossipsimulator;
 
 import java.util.*;
 import java.util.function.BiFunction;
+import java.util.function.Predicate;
 
 import static java.util.Objects.requireNonNull;
 
@@ -145,10 +146,17 @@ public class GossipNodeSimple<T> implements GossipNode<T> {
 
     @Override
     public void addRandomNeighbors() {
+        addRandomNeighbors(node -> true);
+    }
+
+    @Override
+    public void addRandomNeighbors(final Predicate<GossipNode<T>> predicate) {
+        Objects.requireNonNull(predicate, "A predicate to filter nodes is required");
+
         final int prevSize = getNeighborhoodSize();
         final var config = simulator.getConfig();
         final int count = simulator.rand(config.getMaxNeighbors())+config.getMinNeighbors();
-        addNeighbors(simulator.getRandomNodes(count));
+        addNeighbors(simulator.getRandomNodes(count, predicate));
         LOGGER.debug(
                 "Added {} neighbors to {} from the max of {} configured.",
                 getNeighborhoodSize()-prevSize, this, config.getMaxNeighbors());

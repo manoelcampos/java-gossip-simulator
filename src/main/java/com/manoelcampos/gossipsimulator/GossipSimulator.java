@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static java.util.stream.Collectors.toCollection;
@@ -133,7 +135,21 @@ public class GossipSimulator<T> {
      * @return the collection of randomly selected nodes
      */
     public Collection<GossipNode<T>> getRandomNodes(final int count) {
-        return getRandomNodes(nodes, count);
+        return getRandomNodes(count, node -> true);
+    }
+
+    /**
+     * Randomly selects a given number of nodes from the
+     * list of all available nodes, according to a defined {@link Predicate}.
+     * If the requested number is greater or equal to the number of available nodes,
+     * there is not need to randomly select them and all available nodes are returned.
+     *
+     * @param count the number of random nodes to select
+     * @param predicate the Predicate to select nodes
+     * @return the collection of randomly selected nodes
+     */
+    public Collection<GossipNode<T>> getRandomNodes(final int count, final Predicate<GossipNode<T>> predicate) {
+        return getRandomNodes(nodes, count, predicate);
     }
 
     /**
@@ -146,34 +162,63 @@ public class GossipSimulator<T> {
      * @return the collection of unique randomly selected nodes
      */
     public Collection<GossipNode<T>> getRandomNodes(final Collection<GossipNode<T>> sourceNodes, final int count) {
+        return getRandomNodes(sourceNodes, count, node -> true);
+    }
+
+    /**
+     * Randomly selects a given number of nodes from a collection, without repeating selected nodes.
+     * Nodes are selected according to a given {@link Predicate}.
+     * If the requested number is greater or equal to the number of available nodes,
+     * there is not need to randomly select them and all available nodes are returned.
+     *
+     * @param sourceNodes the collection to randomly select nodes from
+     * @param count the max number of random nodes to select
+     * @param predicate the Predicate to select nodes
+     * @return the collection of unique randomly selected nodes
+     */
+    public Collection<GossipNode<T>> getRandomNodes(
+            final Collection<GossipNode<T>> sourceNodes,
+            final int count, final Predicate<GossipNode<T>> predicate)
+    {
+        Objects.requireNonNull(predicate, "A predicate to filter nodes is required");
+
         if(count >= sourceNodes.size()){
+            final var list = sourceNodes.stream().filter(predicate).collect(Collectors.toList());
             LOGGER.debug(
-                    "It was requested the selection of {} random nodes but there are only {} available. Selecting all available ones.",
-                    count, sourceNodes.size());
-            return sourceNodes;
+                    "It was requested the selection of {} random nodes but there are only {} available and {} matching the predicate.",
+                    count, sourceNodes.size(), list.size());
+            return list;
         }
 
         if(sourceNodes instanceof List<GossipNode<T>> list){
-            return randomNodesFromList(list, count);
+            return randomNodesFromList(list, count, predicate);
         }
 
-        return randomNodesFromCollection(sourceNodes, count);
+        return randomNodesFromCollection(sourceNodes, count, predicate);
     }
 
     /**
      * Selects a given number of random nodes from a list, without repeating selected nodes.
      * @param list the list of nodes to randomly select elements from
      * @param count the max number of random nodes to select
+     * @param predicate the Predicate to select nodes
      * @return the Set of unique random selected nodes
      */
-    private Set<GossipNode<T>> randomNodesFromList(final List<GossipNode<T>> list, final int count) {
+    private Set<GossipNode<T>> randomNodesFromList(
+            final List<GossipNode<T>> list,
+            final int count, final Predicate<GossipNode<T>> predicate)
+    {
         return IntStream.range(0, count)
                   .map(i -> rand(list.size()))
                   .mapToObj(list::get)
+                  .filter(predicate)
                   .collect(toCollection(() -> new HashSet<>(count)));
     }
 
-    private List<GossipNode<T>> randomNodesFromCollection(final Collection<GossipNode<T>> availableNodes, final int count) {
+    private List<GossipNode<T>> randomNodesFromCollection(
+            final Collection<GossipNode<T>> availableNodes,
+            final int count, final Predicate<GossipNode<T>> predicate)
+    {
         /*An ordered set containing the indexes of the nodes selected randomly
         * from the collection of available nodes. */
         final Set<Integer> orderedIndexSet = IntStream.range(0, count)
@@ -189,7 +234,7 @@ public class GossipSimulator<T> {
         for (final int selectedIndex : orderedIndexSet) {
             while(it.hasNext()){
                 final GossipNode<T> node = it.next();
-                if(selectedIndex == i++) {
+                if(predicate.test(node) && selectedIndex == i++) {
                     selectedNodes.add(node);
                     break;
                 }

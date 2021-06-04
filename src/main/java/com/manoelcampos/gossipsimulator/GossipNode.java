@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Collection;
 import java.util.Set;
 import java.util.function.BiFunction;
+import java.util.function.Predicate;
 
 /**
  * A node that shares {@link #getMessage() data}
@@ -72,10 +73,19 @@ public interface GossipNode<T> extends Comparable<GossipNode<T>>{
 
     /**
      * Adds randomly selected neighbors to this node,
-     * according to the {@link GossipConfig#getMaxNeighbors()},
-     * to create the initial neighborhood.
+     * to create the initial neighborhood,
+     * according to the {@link GossipConfig#getMaxNeighbors()}.
      */
     void addRandomNeighbors();
+
+    /**
+     * Adds randomly selected neighbors to this node,
+     * to create the initial neighborhood,
+     * according to the {@link GossipConfig#getMaxNeighbors()}
+     * and a given {@link Predicate}.
+     * @param predicate the Predicate to select nodes
+     */
+    void addRandomNeighbors(Predicate<GossipNode<T>> predicate);
 
     /**
      * Gets an unmodifiable Set of neighbors.

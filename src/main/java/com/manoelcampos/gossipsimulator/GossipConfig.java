@@ -24,10 +24,10 @@ public class GossipConfig {
             throw new IllegalArgumentException("Max number of neighbors must be greater than 0.");
         }
 
-        if(maxNeighbors <= fanout){
+        if(maxNeighbors < fanout){
             throw new IllegalArgumentException(
                 String.format(
-                        "Max number of neighbors (%d) must be greater than the fanout (%d).",
+                        "Max number of neighbors (%d) cannot be smaller than the fanout (%d).",
                         maxNeighbors, fanout));
         }
 
